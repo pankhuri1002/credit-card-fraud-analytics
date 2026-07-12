@@ -1,5 +1,11 @@
 # Credit Card Fraud Analytics
 
+## Live dashboard
+
+[**Open the interactive fraud analytics dashboard →**](https://credit-card-fraud-analytics.arpit2432.chatgpt.site)
+
+Recruiters can explore category risk, compare fraud rate with case volume, and adjust the minimum transaction threshold for state-level analysis without downloading the repository.
+
 ## Executive summary
 
 This portfolio project turns one month of historical card transactions into a decision-oriented fraud risk dashboard for compliance teams. It demonstrates business analysis, data-quality assessment, SQL, KPI design, dashboard storytelling, and evidence-based recommendations.
@@ -8,7 +14,7 @@ This portfolio project turns one month of historical card transactions into a de
 
 ## Recruiter review path (5 minutes)
 
-1. Open `dashboard.html` for the business story and interactive views.
+1. Open the [live interactive dashboard](https://credit-card-fraud-analytics.arpit2432.chatgpt.site) for the business story and interactive views.
 2. Read `docs/BRD.md` for scope, stakeholders, requirements, and acceptance criteria.
 3. Review `sql/analysis.sql` for reproducible analysis logic.
 4. Review `docs/DATA_QUALITY.md` before using location joins.
