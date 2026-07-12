@@ -1,0 +1,21 @@
+{
+  "rows": 42308,
+  "columns": 26,
+  "date_min": "2019-12-01 00:02:00",
+  "date_max": "2019-12-31 23:59:00",
+  "unique_transactions": 42308,
+  "duplicate_transaction_ids": 0,
+  "exact_duplicate_rows": 0,
+  "frauds": 180,
+  "fraud_rate_pct": 0.42545145126217265,
+  "total_amount": 2966148.83,
+  "fraud_amount": 97540.81000000003,
+  "unique_cards": 902,
+  "location_rows": 979,
+  "location_unique_cards": 957,
+  "join_coverage_pct": 39.94989127351801,
+  "missing_by_column": {},
+  "invalid_amount_count": 0,
+  "invalid_lat_count": 0,
+  "invalid_long_count": 0
+}
