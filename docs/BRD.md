@@ -1,59 +1,99 @@
 # Business Requirements Document
 
-## Project header
+## 1. Project Header
 
-| Field | Value |
+| Field | Details |
 |---|---|
-| Project | Credit Card Fraud Risk Dashboard |
-| Sponsor/Manager | Jessica |
-| Analyst | Business Analyst |
-| Status | Draft |
-| Submission date | 12 July 2026 |
+| Project Name | Credit Card Fraud Risk Dashboard |
+| Organization | AnalytIQ Edge |
+| Project Manager | Jessica |
+| Prepared By | Business Analyst |
+| Document Status | Draft |
+| Version | 1.0 |
+| Date | 14 July 2026 |
 
-## Executive summary
+## 2. Executive Summary
 
-Create a historical fraud analytics solution that identifies unusual spending patterns, segments fraud exposure, and gives compliance stakeholders a concise dashboard for prioritizing investigation and monitoring improvements.
+The project aims to analyse historical credit card transactions to identify unusual spending patterns and areas with higher fraud exposure. The findings will be presented through an interactive dashboard to support fraud monitoring, investigation prioritization and business decision-making.
 
-## Objectives
+## 3. Project Objectives
 
-1. Quantify labelled fraud count, rate, and monetary exposure for the supplied period.
-2. Identify categories, time windows, locations, and customer segments with elevated observed fraud risk.
-3. Deliver a dashboard whose headline metrics reconcile to the source data.
-4. Provide reusable SQL and documented metric definitions for auditability.
-5. Translate findings into targeted, non-discriminatory monitoring recommendations.
+- Measure the overall number, rate and monetary value of fraudulent transactions.
+- Identify transaction categories, merchants and locations with higher fraud exposure.
+- Compare fraudulent and legitimate transactions to identify unusual spending patterns.
+- Analyse how fraud varies by transaction time and relevant customer segments.
+- Develop an interactive dashboard that presents key fraud indicators and findings.
+- Provide actionable recommendations for improving fraud-monitoring strategies.
 
-## Scope
+## 4. Project Scope
 
-**In scope:** historical profiling; data-quality checks; category, time, state, gender, age-band, job-role and merchant analysis; aggregate dashboard; SQL; requirements and recommendations.
+### In Scope
 
-**Out of scope:** real-time alerts; API integrations; predictive model deployment; automatic card blocking; causal claims; production identity resolution; personally identifiable detail in public outputs.
+- Analysis of historical credit card transaction and location data.
+- Data-quality assessment and validation.
+- Fraud analysis by amount, category, merchant, time, location and customer segment.
+- Development of fraud-related KPIs and an interactive dashboard.
+- Documentation of findings, limitations and recommendations.
 
-## Stakeholders
+### Out of Scope
 
-| Role | Responsibility |
+- Real-time fraud monitoring and alerts.
+- Automatic approval, rejection or blocking of transactions.
+- Development of a production fraud-prediction model.
+- Integration with live banking systems or external APIs.
+- Investigation of individual fraud cases.
+
+## 5. Stakeholders
+
+| Stakeholder | Responsibility |
 |---|---|
-| Jessica, Sponsor | Approves scope and outcomes |
-| Compliance/Fraud Lead | Defines risk priorities and uses findings |
-| Business Analyst | Requirements, analysis, dashboard, recommendations |
-| Data Analyst/Engineer | Data extraction, joining, quality and reproducibility |
-| Information Security/Privacy | Reviews handling of sensitive attributes |
+| Project Manager | Approves the project scope, timeline and final deliverables. |
+| Fraud Investigation Team | Reviews identified fraud patterns and prioritizes areas for investigation. |
+| Compliance Team | Ensures that the analysis supports applicable monitoring policies and practices. |
+| Risk Management Team | Assesses financial and operational exposure associated with fraud. |
+| Business Analyst | Defines requirements, coordinates stakeholders and translates findings into business recommendations. |
+| Data Analyst | Validates the data, performs the analysis and generates insights. |
+| Dashboard Developer | Creates the interactive dashboard based on approved requirements. |
+| Data Privacy and Security Team | Ensures that the data and analytical outputs are handled securely. |
+| Senior Management | Reviews major findings and makes strategic fraud-monitoring decisions. |
 
-## Business requirements
+## 6. Business Requirements
 
-| ID | Requirement | Priority | Acceptance criterion |
+| ID | Business Requirement | Priority | Purpose |
 |---|---|---|---|
-| BR-01 | Reconcile total transactions and fraud labels | Must | Dashboard totals equal validated source totals |
-| BR-02 | Show fraud count, rate, and value exposure | Must | All three metrics include definitions and denominators |
-| BR-03 | Segment risk by category and time | Must | Viewer can compare volume and rate without conflating them |
-| BR-04 | Support demographic/geographic exploration | Should | Aggregates include sample size and responsible-use caveat |
-| BR-05 | Protect sensitive customer data | Must | No card numbers, names, addresses, or DOB in outputs |
-| BR-06 | Document source quality and join coverage | Must | Location-key limitation is visible |
-| BR-07 | Provide reproducible SQL | Should | Queries cover requested exploration and aggregation tasks |
+| BR-01 | The solution must display total transactions, fraudulent transactions, fraud rate and fraud amount. | High | Provide an overall view of fraud exposure. |
+| BR-02 | The solution must analyse fraud by transaction category. | High | Identify categories requiring stronger monitoring. |
+| BR-03 | The solution must compare transaction amounts for fraudulent and legitimate transactions. | High | Detect unusual spending behaviour. |
+| BR-04 | The solution must analyse fraud by merchant, time and geographical location. | High | Identify where and when fraud is concentrated. |
+| BR-05 | The solution should analyse fraud across relevant customer segments. | Medium | Understand differences in observed fraud patterns. |
+| BR-06 | The dashboard must provide relevant filters for interactive analysis. | High | Allow stakeholders to explore specific segments and risk areas. |
+| BR-07 | The displayed metrics must reconcile with the validated source data. | High | Ensure that stakeholders can trust the results. |
+| BR-08 | The solution must present key findings, limitations and recommended actions. | Medium | Support informed monitoring and investigation decisions. |
 
-## Constraints and assumptions
+## 7. Constraints and Assumptions
 
-The dataset covers one historical month; fraud labels are treated as ground truth for descriptive analysis. Location reference keys are degraded by scientific notation. Amount is assumed to be USD based on the source dataset convention. No live refresh is included.
+### Constraints
 
-## Cost-benefit assessment
+- The analysis is limited to the period and fields available in the supplied datasets.
+- The location file may have card-number formatting issues that affect join accuracy.
+- Historical data cannot provide real-time fraud detection.
+- Fraud patterns with small transaction volumes may not be reliable for decision-making.
+- The dashboard will not have a live data connection.
 
-The solution uses existing data and lightweight tools, so implementation effort is primarily analyst time. Benefits include faster risk triage, repeatable reporting, clearer concentration analysis, and reduced manual spreadsheet review. Production benefits require validation against newer data and operational baselines.
+### Assumptions
+
+- The `is_fraud` field correctly identifies fraudulent and legitimate transactions.
+- Transaction amounts and timestamps are recorded consistently.
+- The transaction dataset is the primary source for calculating project metrics.
+- Stakeholders will use the dashboard for monitoring and investigation support, not automatic transaction decisions.
+
+## 8. Cost-Benefit Analysis
+
+| Area | Cost/Effort | Expected Benefit |
+|---|---|---|
+| Data analysis | Time required to validate and analyse transaction data | Faster identification of fraud patterns and risk concentrations |
+| Dashboard development | Time required to design, build and test the dashboard | Reduced manual reporting and easier access to fraud insights |
+| Documentation | Time required to define requirements and record findings | Improved clarity, consistency and future maintainability |
+| Monitoring recommendations | Stakeholder review and validation effort | Better prioritization of fraud-monitoring and investigation activities |
+
+**Overall assessment:** The project requires limited development cost because it uses existing data and analytical tools. Its expected benefits include reduced manual analysis, clearer fraud visibility and better prioritization of monitoring efforts.
