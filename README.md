@@ -8,7 +8,7 @@ Recruiters can explore category risk, compare fraud rate with case volume, and a
 
 ## Executive summary
 
-This portfolio project turns one month of historical card transactions into a decision-oriented fraud risk dashboard for compliance teams. It demonstrates business analysis, data-quality assessment, SQL, KPI design, dashboard storytelling, and evidence-based recommendations.
+This portfolio project turns one month of historical card transactions into a decision-oriented fraud risk dashboard for compliance teams. It demonstrates business analysis, data-quality assessment, KPI design, Tableau dashboard development, dashboard storytelling, and evidence-based recommendations.
 
 **Headline:** 180 of 42,308 transactions were labelled fraudulent (0.425%), representing $97,540.81 or 3.29% of transaction value. Fraud is concentrated in online shopping and other card-not-present categories, while transactions from midnight to 05:59 show a 0.821% fraud rate versus 0.327% during the rest of the day.
 
@@ -16,8 +16,7 @@ This portfolio project turns one month of historical card transactions into a de
 
 1. Open the [live interactive dashboard](https://credit-card-fraud-analytics.arpit2432.chatgpt.site/) for the business story and interactive views.
 2. Read `docs/BRD.md` for scope, stakeholders, requirements, and acceptance criteria.
-3. Review `sql/analysis.sql` for reproducible analysis logic.
-4. Review `docs/DATA_QUALITY.md` before using location joins.
+3. Review `docs/DATA_QUALITY.md` for the important data-quality findings and limitations.
 
 ## Business problem
 
@@ -40,7 +39,7 @@ AnalytIQ Edge needs to identify unusual spending patterns, segment fraud risk, a
 
 ## Tools and methods
 
-Python/pandas for validation and aggregation; SQL templates for reproducibility; HTML/CSS/JavaScript for a portable dashboard; BA documentation for requirements traceability.
+Tableau for KPI calculations, data visualisation and interactive dashboard development; CSV files as the project data source; BA documentation for requirements traceability.
 
 ## Data scope and limitations
 
