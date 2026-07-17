@@ -2,7 +2,7 @@
 
 ## Live dashboard
 
-[**Open the interactive fraud analytics dashboard →**](https://pankhuri1002.github.io/credit-card-fraud-analytics/)
+[**Open the interactive fraud analytics dashboard →**](https://credit-card-fraud-analytics.arpit2432.chatgpt.site/)
 
 Recruiters can explore category risk, compare fraud rate with case volume, and adjust the minimum transaction threshold for state-level analysis without downloading the repository.
 
@@ -14,7 +14,7 @@ This portfolio project turns one month of historical card transactions into a de
 
 ## Recruiter review path (5 minutes)
 
-1. Open the [live interactive dashboard](https://pankhuri1002.github.io/credit-card-fraud-analytics/) for the business story and interactive views.
+1. Open the [live interactive dashboard](https://credit-card-fraud-analytics.arpit2432.chatgpt.site/) for the business story and interactive views.
 2. Read `docs/BRD.md` for scope, stakeholders, requirements, and acceptance criteria.
 3. Review `sql/analysis.sql` for reproducible analysis logic.
 4. Review `docs/DATA_QUALITY.md` before using location joins.
