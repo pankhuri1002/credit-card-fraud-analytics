@@ -2,9 +2,9 @@
 
 ## Live dashboard
 
-[**Open the interactive fraud analytics dashboard →**](https://pankhuri1002.github.io/credit-card-fraud-analytics/?v=20260727-final-v3)
+[**Open the interactive fraud analytics dashboard →**](https://pankhuri1002.github.io/credit-card-fraud-analytics/?v=20260727-amount-fraud-rate-v1)
 
-Recruiters can explore category risk, switch between fraud rate and case volume, adjust the minimum transaction threshold for state-level analysis, and compare fraudulent and legitimate transactions across transaction-amount bands.
+Recruiters can explore category risk, switch between fraud rate and case volume, adjust the minimum transaction threshold for state-level analysis, and compare the fraud rate across transaction-amount bands, with fraudulent and total counts shown for context.
 
 ## Executive summary
 
@@ -14,7 +14,7 @@ This portfolio project turns one month of historical card transactions into a de
 
 ## Recruiter review path (5 minutes)
 
-1. Open the [live interactive dashboard](https://pankhuri1002.github.io/credit-card-fraud-analytics/?v=20260727-final-v3) for the business story and interactive views.
+1. Open the [live interactive dashboard](https://pankhuri1002.github.io/credit-card-fraud-analytics/?v=20260727-amount-fraud-rate-v1) for the business story and interactive views.
 2. Read `docs/BRD.md` for scope, stakeholders, requirements, and acceptance criteria.
 3. Review `docs/DATA_QUALITY.md` for the important data-quality findings and limitations.
 
@@ -27,14 +27,14 @@ AnalytIQ Edge needs to identify unusual spending patterns, segment fraud risk, a
 - **Category concentration:** `shopping_net` had 42 frauds and the highest category fraud rate (1.299%); together with `grocery_pos`, `shopping_pos`, and `misc_net`, it accounts for most labelled fraud.
 - **Value exposure:** fraud represented 3.29% of transaction value despite only 0.425% of transactions, showing that count-only monitoring understates exposure.
 - **Time risk:** midnight–05:59 had about 2.5× the fraud rate of other hours (0.821% vs 0.327%).
-- **Amount risk:** 90 of 504 transactions of $500 or more were fraudulent (17.86%), while 43 of 747 transactions from $250 to $499 were fraudulent (5.76%).
+- **Amount risk:** The within-band fraud rate was 17.86% for $500+ transactions (90 ÷ 504) and 5.76% for $250–$499 transactions (43 ÷ 747); every band below $250 remained under 0.26%.
 - **Geography:** several states show elevated rates, but low-volume states need minimum-volume controls and follow-up validation.
 
 ## Recommended actions
 
 1. Strengthen card-not-present monitoring by prioritizing online shopping transactions, especially overnight.
-2. Apply additional verification to unusually high-value transactions, especially those of $250 or more.
-3. Combine amount deviation, category, merchant history, and the customer’s normal spending pattern instead of relying on one warning sign.
+2. Prioritize transactions of $250 or more for additional verification when other warning signs are present; do not block them based on amount alone.
+3. Combine transaction amount, category, merchant history, and timing instead of relying on one warning sign.
 4. Require minimum sample sizes before escalating geographic or other customer segments.
 5. Treat the findings as initial risk indicators. Because the analysis covers one month, use these patterns to select transactions for additional verification—not automatic blocking.
 
