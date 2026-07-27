@@ -2,7 +2,7 @@
 
 ## Live dashboard
 
-[**Open the interactive fraud analytics dashboard →**](https://pankhuri1002.github.io/credit-card-fraud-analytics/)
+[**Open the interactive fraud analytics dashboard →**](https://pankhuri1002.github.io/credit-card-fraud-analytics/?v=20260727-final-v3)
 
 Recruiters can explore category risk, switch between fraud rate and case volume, adjust the minimum transaction threshold for state-level analysis, and compare fraudulent and legitimate transactions across transaction-amount bands.
 
@@ -14,7 +14,7 @@ This portfolio project turns one month of historical card transactions into a de
 
 ## Recruiter review path (5 minutes)
 
-1. Open the [live interactive dashboard](https://pankhuri1002.github.io/credit-card-fraud-analytics/) for the business story and interactive views.
+1. Open the [live interactive dashboard](https://pankhuri1002.github.io/credit-card-fraud-analytics/?v=20260727-final-v3) for the business story and interactive views.
 2. Read `docs/BRD.md` for scope, stakeholders, requirements, and acceptance criteria.
 3. Review `docs/DATA_QUALITY.md` for the important data-quality findings and limitations.
 
