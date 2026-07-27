@@ -19,3 +19,10 @@
 ## Privacy controls
 
 Portfolio outputs exclude card number, customer name, street address, date of birth, and full transaction-level customer detail. Demographic and job results are aggregate, descriptive signals only and must not be used as standalone decision rules.
+
+## Rate reliability controls
+
+- Category × time heatmap cells are displayed only when they meet the viewer's selected minimum transaction threshold.
+- The merchant risk matrix includes merchants with at least 50 transactions.
+- The matrix uses the overall 0.425% fraud rate and the median merchant volume of 62 transactions as descriptive reference lines.
+- Results cover one month and support investigation prioritization only; they do not establish that a category, time, state or merchant caused fraud.
