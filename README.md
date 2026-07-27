@@ -4,7 +4,7 @@
 
 [**Open the interactive fraud analytics dashboard →**](https://pankhuri1002.github.io/credit-card-fraud-analytics/)
 
-Recruiters can explore category risk, compare fraud rate with case volume, and adjust the minimum transaction threshold for state-level analysis without downloading the repository.
+Recruiters can explore category risk, switch between fraud rate and case volume, adjust the minimum transaction threshold for state-level analysis, and compare fraudulent and legitimate transactions across transaction-amount bands.
 
 ## Executive summary
 
@@ -26,16 +26,17 @@ AnalytIQ Edge needs to identify unusual spending patterns, segment fraud risk, a
 
 - **Category concentration:** `shopping_net` had 42 frauds and the highest category fraud rate (1.299%); together with `grocery_pos`, `shopping_pos`, and `misc_net`, it accounts for most labelled fraud.
 - **Value exposure:** fraud represented 3.29% of transaction value despite only 0.425% of transactions, showing that count-only monitoring understates exposure.
-- **Time risk:** midnight-05:59 had about 2.5x the fraud rate of other hours (0.821% vs 0.327%).
-- **Age pattern:** the 70+ segment had the highest observed age-band rate (0.661%), but this is descriptive and should not be used alone for customer decisions.
+- **Time risk:** midnight–05:59 had about 2.5× the fraud rate of other hours (0.821% vs 0.327%).
+- **Amount risk:** 90 of 504 transactions of $500 or more were fraudulent (17.86%), while 43 of 747 transactions from $250 to $499 were fraudulent (5.76%).
 - **Geography:** several states show elevated rates, but low-volume states need minimum-volume controls and follow-up validation.
 
 ## Recommended actions
 
-1. Prioritize stepped-up review for online shopping and other card-not-present transactions, especially during overnight hours.
-2. Combine category, time, amount deviation, merchant history, and customer baseline in monitoring rules; avoid single-attribute rules.
-3. Add minimum transaction-volume thresholds to geographic and job-role comparisons.
-4. Repair the location reference key before using it in production joins.
+1. Strengthen card-not-present monitoring by prioritizing online shopping transactions, especially overnight.
+2. Apply additional verification to unusually high-value transactions, especially those of $250 or more.
+3. Combine amount deviation, category, merchant history, and the customer’s normal spending pattern instead of relying on one warning sign.
+4. Require minimum sample sizes before escalating geographic or other customer segments.
+5. Treat the findings as initial risk indicators. Because the analysis covers one month, use these patterns to select transactions for additional verification—not automatic blocking.
 
 ## Tools and methods
 
@@ -43,7 +44,7 @@ Tableau for KPI calculations, data visualisation and interactive dashboard devel
 
 ## Data scope and limitations
 
-- 42,308 transactions from 1-31 December 2019; 180 labelled frauds.
+- 42,308 transactions from 1–31 December 2019; 180 labelled frauds.
 - The data is historical and anonymized; findings are not a production fraud model.
 - `location_data.csv` stores card numbers in scientific notation, producing only ~39.95% reliable join coverage. Dashboard geography therefore uses coordinates already present in the transaction table.
 - Sensitive fields such as card number, name, street, and date of birth are excluded from portfolio outputs.
