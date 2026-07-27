@@ -22,7 +22,7 @@ Portfolio outputs exclude card number, customer name, street address, date of bi
 
 ## Rate reliability controls
 
-- Category × time heatmap cells are displayed only when they meet the viewer's selected minimum transaction threshold.
+- State comparisons are displayed only after applying the viewer's selected minimum transaction threshold to all states.
 - The merchant risk matrix includes merchants with at least 50 transactions.
 - The matrix uses the overall 0.425% fraud rate and the median merchant volume of 62 transactions as descriptive reference lines.
 - Results cover one month and support investigation prioritization only; they do not establish that a category, time, state or merchant caused fraud.
