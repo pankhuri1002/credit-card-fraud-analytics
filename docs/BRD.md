@@ -19,9 +19,9 @@ The project aims to analyse historical credit card transactions to identify unus
 ## 3. Project Objectives
 
 - Measure the overall number, rate and monetary value of fraudulent transactions.
-- Identify transaction categories, merchants and locations with higher fraud exposure.
+- Identify transaction categories and locations with higher fraud exposure.
 - Compare fraudulent and legitimate transactions to identify unusual spending patterns.
-- Analyse how fraud varies by transaction time and relevant customer segments.
+- Analyse how fraud varies by transaction time and merchant.
 - Develop an interactive dashboard that presents key fraud indicators and findings.
 - Provide actionable recommendations for improving fraud-monitoring strategies.
 
@@ -31,7 +31,7 @@ The project aims to analyse historical credit card transactions to identify unus
 
 - Analysis of historical credit card transaction and location data.
 - Data-quality assessment and validation.
-- Fraud analysis by amount, category, merchant, time, location and customer segment.
+- Fraud analysis by amount, category, time, location and merchant.
 - Development of fraud-related KPIs and an interactive dashboard.
 - Documentation of findings, limitations and recommendations.
 
@@ -64,8 +64,8 @@ The project aims to analyse historical credit card transactions to identify unus
 | BR-01 | The solution must display total transactions, fraudulent transactions, fraud rate and fraud amount. | High | Provide an overall view of fraud exposure. |
 | BR-02 | The solution must analyse fraud by transaction category. | High | Identify categories requiring stronger monitoring. |
 | BR-03 | The solution must compare transaction amounts for fraudulent and legitimate transactions. | High | Detect unusual spending behaviour. |
-| BR-04 | The solution must analyse fraud by merchant, time and geographical location. | High | Identify where and when fraud is concentrated. |
-| BR-05 | The solution should analyse fraud across relevant customer segments. | Medium | Understand differences in observed fraud patterns. |
+| BR-04 | The solution must analyse fraud by transaction time and geographical location. | High | Identify when and where fraud is concentrated. |
+| BR-05 | The solution must analyse merchant risk using transaction volume, fraud rate and fraud-labelled transaction value. | High | Identify merchants that should be prioritized for further review while controlling for transaction volume. |
 | BR-06 | The dashboard must provide relevant filters for interactive analysis. | High | Allow stakeholders to explore specific segments and risk areas. |
 | BR-07 | The displayed metrics must reconcile with the validated source data. | High | Ensure that stakeholders can trust the results. |
 | BR-08 | The solution must present key findings, limitations and recommended actions. | Medium | Support informed monitoring and investigation decisions. |
