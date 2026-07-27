@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <!-- release: 20260727-heatmap-merchant-v1 -->
+  <!-- release: 20260727-dashboard-v2 -->
   <title>Credit Card Fraud Analytics</title>
   <style>
     :root{--ink:#14213d;--muted:#64748b;--blue:#2563eb;--gold:#d97706;--bg:#f5f7fb;--card:#fff;--line:#e2e8f0}
@@ -67,15 +67,6 @@
     .insight span,.amountNote{font-size:13px;color:var(--muted);line-height:1.5}
     .amountNote{border-left:3px solid #d97706;padding-left:12px;margin-top:15px}
     .wide{margin-top:18px}
-    .heatmapWrap{overflow-x:auto;margin-top:14px}
-    .heatmap{display:grid;grid-template-columns:150px repeat(6,minmax(115px,1fr));gap:5px;min-width:850px}
-    .heatmap .head{font-size:11px;font-weight:700;color:var(--muted);padding:8px 5px;text-align:center}
-    .heatmap .rowLabel{font-size:12px;text-transform:capitalize;display:flex;align-items:center;padding:7px}
-    .heatCell{min-height:52px;border-radius:8px;padding:7px;text-align:center;display:flex;flex-direction:column;justify-content:center;font-size:11px;background:#f1f5f9;color:var(--muted)}
-    .heatCell b{font-size:13px}
-    .heatCell small{font-size:9px;margin-top:3px}
-    .heatLegend{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:11px;margin-top:12px}
-    .heatScale{width:130px;height:10px;border-radius:5px;background:linear-gradient(90deg,#fff1f2,#be123c)}
     .chartStatus{padding:18px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);font-size:13px;margin-top:12px}
     .matrixLegend{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0;color:var(--muted);font-size:11px}
     .matrixLegend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px}
@@ -107,7 +98,7 @@
       <article><small>Fraud amount</small><strong>$97.5K</strong><span>3.29% of total value</span></article>
       <article><small>Late-night fraud rate</small><strong>1.630%</strong><span>22:00–03:59 · 163 of 9,999</span></article>
     </section>
-    <aside><b>Decision signal:</b> Fraud risk is most useful when category, time, amount and merchant evidence are considered together. At the default heatmap threshold, online categories show the strongest late-night combinations; high-value transactions and merchants above the overall fraud-rate benchmark provide additional review signals. Use these indicators for stepped-up verification—not automatic blocking.</aside>
+    <aside><b>Decision signal:</b> Fraud risk is most useful when category, time, amount, merchant and geography are considered together. Online categories, late-night activity, high-value transactions and merchants above the overall fraud-rate benchmark provide useful review signals. Use these indicators for stepped-up verification—not automatic blocking.</aside>
     <section class="two">
       <article class="panel">
         <div class="panelHead">
@@ -145,7 +136,7 @@
       <article class="panel">
         <h2>Recommended actions</h2>
         <ol>
-          <li><b>Prioritize high-risk category and time combinations</b><span>At the 100-transaction threshold, focus on combinations such as online shopping at 20:00–23:59 and grocery POS at 00:00–03:59.</span></li>
+          <li><b>Strengthen late-night verification</b><span>Prioritize activity from 22:00–03:59 for additional review, especially at 22:00 and 23:00 where the highest hourly fraud rates were observed.</span></li>
           <li><b>Prioritize $250+ transactions for review</b><span>Apply additional verification when high amount appears with other risk signals: observed fraud rates were 17.86% for $500+ and 5.76% for $250–$499.</span></li>
           <li><b>Review high-volume, above-average merchants</b><span>Start with merchants in the matrix’s top-right quadrant, then inspect their category, time and amount patterns before taking action.</span></li>
           <li><b>Apply state-volume safeguards</b><span>Filter all states by a minimum transaction count before comparing fraud rates; validate low-volume results before acting.</span></li>
@@ -168,27 +159,6 @@
       </article>
     </section>
     <section class="panel wide">
-      <div class="panelHead">
-        <div>
-          <h2>Category × Transaction Hour Fraud-Rate Heatmap</h2>
-          <p>Each cell shows fraudulent transactions ÷ all transactions for that category and time band.</p>
-        </div>
-        <label>Min transactions per cell
-          <select id="heatMinVolume">
-            <option value="50">50</option>
-            <option value="100" selected>100</option>
-            <option value="250">250</option>
-            <option value="500">500</option>
-          </select>
-        </label>
-      </div>
-      <div id="heatmapStatus" class="chartStatus">Loading category and time combinations from the source data…</div>
-      <div id="heatmapWrap" class="heatmapWrap" hidden>
-        <div id="riskHeatmap" class="heatmap"></div>
-        <div class="heatLegend"><span>Lower observed rate</span><i class="heatScale"></i><span>Higher observed rate</span><span>· Cells below the selected volume are muted.</span></div>
-      </div>
-    </section>
-    <section class="panel wide">
       <h2>Merchant Risk Matrix</h2>
       <p>Transaction volume on the X-axis, fraud rate on the Y-axis, and fraud-labelled value represented by bubble size. Merchants must have at least 50 transactions.</p>
       <div class="matrixLegend">
@@ -206,7 +176,7 @@
       <div>
         <p><b>Fraud rate</b><br>Fraud-labelled transactions ÷ all transactions in segment.</p>
         <p><b>Fraud amount</b><br>Transaction amount where <code>is_fraud = 1</code>.</p>
-        <p><b>Reliability controls</b><br>Heatmap cells require the selected volume; merchants require at least 50 transactions.</p>
+        <p><b>Reliability controls</b><br>State comparisons use the selected minimum volume; merchants require at least 50 transactions.</p>
         <p><b>Source</b><br>Supplied historical transaction dataset; direct identifiers excluded.</p>
         <p><b>Important caveat</b><br>One month of descriptive data identifies review priorities, not causes or automatic decision rules.</p>
       </div>
@@ -223,7 +193,6 @@
     const hours=[[0,1368,18,1.315789],[1,1400,18,1.285714],[2,1399,15,1.072194],[3,1421,16,1.125968],[4,1374,1,.07278],[5,1444,1,.069252],[6,1364,0,0],[7,1378,0,0],[8,1424,0,0],[9,1353,1,.07391],[10,1372,0,0],[11,1376,2,.145349],[12,2129,1,.04697],[13,2172,2,.092081],[14,2066,0,0],[15,2051,0,0],[16,2143,2,.093327],[17,2152,1,.046468],[18,2184,1,.045788],[19,2132,2,.093809],[20,2055,2,.097324],[21,2140,1,.046729],[22,2196,47,2.140255],[23,2215,49,2.21219]];
     const states=[["AK",61,0,0],["AL",1314,8,.608828],["AR",1046,7,.669216],["AZ",346,0,0],["CA",1871,3,.160342],["CO",419,6,1.431981],["CT",255,0,0],["DC",110,0,0],["FL",1451,1,.068918],["GA",891,7,.785634],["HI",80,0,0],["IA",879,0,0],["ID",177,0,0],["IL",1414,11,.777935],["IN",876,3,.342466],["KS",736,3,.407609],["KY",961,3,.312175],["LA",650,0,0],["MA",441,0,0],["MD",876,0,0],["ME",483,0,0],["MI",1509,6,.397614],["MN",1016,3,.295276],["MO",1265,8,.632411],["MS",689,2,.290276],["MT",364,0,0],["NC",1013,0,0],["ND",475,1,.210526],["NE",813,7,.861009],["NH",265,1,.377358],["NJ",739,0,0],["NM",536,3,.559701],["NV",192,4,2.083333],["NY",2801,0,0],["OH",1520,14,.921053],["OK",896,10,1.116071],["OR",599,0,0],["PA",2585,17,.65764],["RI",16,0,0],["SC",907,3,.330761],["SD",406,0,0],["TN",568,9,1.584507],["TX",3111,16,.514304],["UT",341,0,0],["VA",896,4,.446429],["VT",398,0,0],["WA",645,0,0],["WI",976,4,.409836],["WV",802,12,1.496259],["WY",628,4,.636943]];
     const amountBins=[["$500+",504,90],["$250–$499",747,43],["$100–$249",6330,7],["$50–$99",12770,1],["$25–$49",6870,1],["Under $25",15087,38]];
-    const timeBands=["00:00–03:59","04:00–07:59","08:00–11:59","12:00–15:59","16:00–19:59","20:00–23:59"];
     const sourceCsv="https://raw.githubusercontent.com/pankhuri1002/credit-card-fraud-analytics/main/data/raw/cc_data_dec19.csv";
     let detailedRisk=null;
 
@@ -298,51 +267,19 @@
     function aggregateDetailedRisk(csvRows){
       const header=csvRows[0];
       const ix=Object.fromEntries(header.map((name,index)=>[name.replace(/^\uFEFF/,""),index]));
-      const heat=new Map(),merchants=new Map();
+      const merchants=new Map();
       for(const row of csvRows.slice(1)){
         if(row.length<header.length)continue;
-        const category=row[ix.category],merchant=row[ix.merchant];
-        const dateTime=row[ix.trans_date_trans_time]||"";
-        const timePart=dateTime.split(" ")[1]||"0:00";
-        const hour=Number(timePart.split(":")[0]);
-        const band=timeBands[Math.min(5,Math.max(0,Math.floor(hour/4)))];
+        const merchant=row[ix.merchant];
         const fraud=Number(row[ix.is_fraud])||0;
         const amount=Number(row[ix.amt])||0;
-        const heatKey=`${category}|${band}`;
-        const heatRow=heat.get(heatKey)||{category,band,transactions:0,frauds:0};
-        heatRow.transactions++;heatRow.frauds+=fraud;heat.set(heatKey,heatRow);
         const merchantRow=merchants.get(merchant)||{merchant,transactions:0,frauds:0,fraudAmount:0};
         merchantRow.transactions++;merchantRow.frauds+=fraud;
         if(fraud===1)merchantRow.fraudAmount+=amount;
         merchants.set(merchant,merchantRow);
       }
-      for(const row of heat.values())row.rate=100*row.frauds/row.transactions;
       for(const row of merchants.values())row.rate=100*row.frauds/row.transactions;
-      return {heat,merchants:[...merchants.values()]};
-    }
-
-    function renderHeatmap(){
-      if(!detailedRisk)return;
-      const min=Number(document.getElementById("heatMinVolume").value);
-      const categoryNames=categories.map(row=>row[0]);
-      const qualifying=[...detailedRisk.heat.values()].filter(row=>row.transactions>=min);
-      const max=Math.max(...qualifying.map(row=>row.rate),0.001);
-      let html=`<div></div>${timeBands.map(band=>`<div class="head">${band}</div>`).join("")}`;
-      for(const category of categoryNames){
-        html+=`<div class="rowLabel">${category.replaceAll("_"," ")}</div>`;
-        for(const band of timeBands){
-          const row=detailedRisk.heat.get(`${category}|${band}`)||{transactions:0,frauds:0,rate:0};
-          const eligible=row.transactions>=min;
-          const intensity=eligible?Math.max(.08,row.rate/max):0;
-          const bg=eligible?`rgba(190,18,60,${.08+.86*intensity})`:"#f1f5f9";
-          const color=eligible&&intensity>.46?"#fff":"#475569";
-          const label=eligible?`${row.rate.toFixed(2)}%`:"—";
-          html+=`<div class="heatCell" style="background:${bg};color:${color}" title="${category.replaceAll("_"," ")} · ${band}: ${row.frauds} frauds of ${row.transactions.toLocaleString()} transactions (${row.rate.toFixed(3)}%)"><b>${label}</b><small>${row.transactions.toLocaleString()} txns · ${row.frauds} frauds</small></div>`;
-        }
-      }
-      document.getElementById("riskHeatmap").innerHTML=html;
-      document.getElementById("heatmapStatus").hidden=true;
-      document.getElementById("heatmapWrap").hidden=false;
+      return {merchants:[...merchants.values()]};
     }
 
     function renderMerchantMatrix(){
@@ -385,10 +322,8 @@
         const response=await fetch(sourceCsv,{cache:"no-store"});
         if(!response.ok)throw new Error(`Source returned ${response.status}`);
         detailedRisk=aggregateDetailedRisk(parseCsv(await response.text()));
-        renderHeatmap();
         renderMerchantMatrix();
       }catch(error){
-        document.getElementById("heatmapStatus").textContent="The detailed source data could not be loaded. Open the dashboard with an internet connection and refresh.";
         document.getElementById("merchantStatus").textContent="The detailed source data could not be loaded. Open the dashboard with an internet connection and refresh.";
       }
     }
@@ -397,7 +332,6 @@
     renderStates();
     renderHours();
     renderAmounts();
-    document.getElementById("heatMinVolume").addEventListener("change",renderHeatmap);
     loadDetailedRisk();
   </script>
 </body>
