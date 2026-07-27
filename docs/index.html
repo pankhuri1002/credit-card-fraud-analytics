@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <!-- release: 20260727-final-v3 -->
+  <!-- release: 20260727-amount-fraud-rate-v1 -->
   <title>Credit Card Fraud Analytics</title>
   <style>
     :root{--ink:#14213d;--muted:#64748b;--blue:#2563eb;--gold:#d97706;--bg:#f5f7fb;--card:#fff;--line:#e2e8f0}
@@ -90,7 +90,7 @@
       <article><small>Fraud amount</small><strong>$97.5K</strong><span>3.29% of total value</span></article>
       <article><small>Overnight fraud rate</small><strong>0.821%</strong><span>2.5× rest-of-day rate</span></article>
     </section>
-    <aside><b>Decision signal:</b> Online shopping has the highest category fraud rate and fraud value, while overnight transactions show materially higher observed risk. Use combined rules—not demographic attributes alone—for stepped-up review.</aside>
+    <aside><b>Decision signal:</b> Online shopping and overnight activity show elevated observed risk. Transaction amount is also a strong review signal: 17.86% of $500+ transactions and 5.76% of $250–$499 transactions were labelled fraudulent. Use these indicators together for stepped-up review—not automatic blocking.</aside>
     <section class="two">
       <article class="panel">
         <div class="panelHead">
@@ -128,8 +128,8 @@
         <h2>Recommended actions</h2>
         <ol>
           <li><b>Strengthen card-not-present monitoring</b><span>Prioritize online shopping, especially overnight.</span></li>
-          <li><b>Review high-value transactions</b><span>Apply additional checks to unusually large transactions, especially $250 and above.</span></li>
-          <li><b>Use combined risk rules</b><span>Blend amount deviation, category, merchant history and customer baseline.</span></li>
+          <li><b>Prioritize $250+ transactions for review</b><span>Apply additional verification when high amount appears with other risk signals: observed fraud rates were 17.86% for $500+ and 5.76% for $250–$499.</span></li>
+          <li><b>Use combined risk rules</b><span>Combine transaction amount, category, merchant history and timing instead of relying on amount alone.</span></li>
           <li><b>Apply volume safeguards</b><span>Require minimum sample sizes before escalating segments.</span></li>
           <li><b>Treat findings as initial risk indicators</b><span>This analysis covers one month, so use the patterns to select transactions for additional verification—not automatic blocking.</span></li>
         </ol>
@@ -137,16 +137,16 @@
     </section>
     <section class="two amountSection">
       <article class="panel">
-        <h2>Fraudulent vs Legitimate Transactions by Amount</h2>
-        <p>Distribution within each class, with the highest transaction amount at the top.</p>
+        <h2>Fraud Rate by Transaction Amount</h2>
+        <p>Fraudulent transactions ÷ all transactions in each amount band. Counts are shown beside each rate.</p>
         <div id="amountComparison"></div>
       </article>
       <article class="panel">
         <h2>Amount-based insight</h2>
-        <div class="insight"><b>$500+ transactions</b><span>90 of 504 were fraudulent, resulting in a 17.86% fraud rate.</span></div>
-        <div class="insight"><b>$250–$499 transactions</b><span>43 of 747 were fraudulent, resulting in a 5.76% fraud rate.</span></div>
+        <div class="insight"><b>$500+ transactions</b><span>90 fraudulent ÷ 504 total × 100 = 17.86% fraud rate—the highest amount-band rate.</span></div>
+        <div class="insight"><b>$250–$499 transactions</b><span>43 fraudulent ÷ 747 total × 100 = 5.76% fraud rate.</span></div>
         <div class="insight"><b>Transactions below $250</b><span>Every amount band recorded a fraud rate below 0.26%.</span></div>
-        <p class="amountNote"><b>Recommendation:</b> Use high transaction amount as an additional review signal, not as an automatic blocking rule. Combine it with customer history, category, merchant and timing.</p>
+        <p class="amountNote"><b>Recommendation:</b> Prioritize $250+ transactions for additional verification when they also show other warning signs. Because the analysis covers only one month, do not automatically block a transaction based on amount alone.</p>
       </article>
     </section>
     <section class="method">
@@ -205,18 +205,17 @@
     }
 
     function renderAmounts(){
-      const totalFrauds=amountBins.reduce((sum,row)=>sum+row[2],0);
-      const totalLegitimate=amountBins.reduce((sum,row)=>sum+row[1]-row[2],0);
       const rows=amountBins.map(row=>({
         label:row[0],
-        fraudShare:100*row[2]/totalFrauds,
-        legitimateShare:100*(row[1]-row[2])/totalLegitimate,
+        total:row[1],
+        frauds:row[2],
+        legitimate:row[1]-row[2],
         fraudRate:100*row[2]/row[1]
       }));
-      const max=Math.max(...rows.flatMap(row=>[row.fraudShare,row.legitimateShare]));
+      const max=Math.max(...rows.map(row=>row.fraudRate));
       document.getElementById("amountComparison").innerHTML=
-        `<div class="comparisonLegend"><span><i class="fraudKey"></i>Share of fraud cases</span><span><i class="legitimateKey"></i>Share of legitimate transactions</span></div>`+
-        rows.map(row=>`<div class="comparisonRow"><b>${row.label}</b><div class="comparisonPair"><div class="comparisonTrack"><i class="fraudBar" style="width:${100*row.fraudShare/max}%"></i></div><div class="comparisonTrack"><i class="legitimateBar" style="width:${100*row.legitimateShare/max}%"></i></div></div><span>${row.fraudShare.toFixed(1)}%<br>${row.legitimateShare.toFixed(1)}%</span><em>${row.fraudRate.toFixed(2)}% rate</em></div>`).join("");
+        `<div class="comparisonLegend"><span><i class="fraudKey"></i>Fraud rate within amount band</span></div>`+
+        rows.map(row=>`<div class="comparisonRow" title="${row.frauds} fraudulent, ${row.legitimate} legitimate, ${row.total} total"><b>${row.label}</b><div class="comparisonTrack"><i class="fraudBar" style="width:${100*row.fraudRate/max}%"></i></div><span>${row.fraudRate.toFixed(2)}%</span><em>${row.frauds} of ${row.total}</em></div>`).join("");
     }
 
     renderCategories("rate");
