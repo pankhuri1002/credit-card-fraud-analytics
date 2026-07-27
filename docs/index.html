@@ -6,7 +6,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <!-- release: 20260727-amount-fraud-rate-v1 -->
+  <!-- release: 20260727-hour-state-correction-v1 -->
   <title>Credit Card Fraud Analytics</title>
   <style>
     :root{--ink:#14213d;--muted:#64748b;--blue:#2563eb;--gold:#d97706;--bg:#f5f7fb;--card:#fff;--line:#e2e8f0}
@@ -47,6 +47,7 @@
     table{width:100%;border-collapse:collapse;font-size:13px}
     th,td{padding:9px;border-bottom:1px solid var(--line);text-align:right}
     th:first-child,td:first-child{text-align:left}
+    .tableNote{margin:10px 0 0;color:var(--muted);font-size:11px}
     ol{padding:0;list-style:none;counter-reset:n}
     li{counter-increment:n;display:grid;grid-template-columns:28px 1fr;margin:15px 0}
     li:before{content:counter(n);grid-row:1/3;background:#eff6ff;color:var(--blue);width:23px;height:23px;text-align:center;padding-top:2px;border-radius:50%;font-weight:700}
@@ -88,9 +89,9 @@
       <article><small>Transactions</small><strong>42,308</strong><span>1–31 Dec 2019</span></article>
       <article><small>Labelled frauds</small><strong>180</strong><span>0.425% of transactions</span></article>
       <article><small>Fraud amount</small><strong>$97.5K</strong><span>3.29% of total value</span></article>
-      <article><small>Overnight fraud rate</small><strong>0.821%</strong><span>2.5× rest-of-day rate</span></article>
+      <article><small>Late-night fraud rate</small><strong>1.630%</strong><span>22:00–03:59 · 163 of 9,999</span></article>
     </section>
-    <aside><b>Decision signal:</b> Online shopping and overnight activity show elevated observed risk. Transaction amount is also a strong review signal: 17.86% of $500+ transactions and 5.76% of $250–$499 transactions were labelled fraudulent. Use these indicators together for stepped-up review—not automatic blocking.</aside>
+    <aside><b>Decision signal:</b> Online shopping and late-night activity show elevated observed risk. The hourly pattern peaks at 22:00–23:59, and the 22:00–03:59 window recorded a 1.630% fraud rate. Transaction amount is also a strong review signal: 17.86% of $500+ transactions and 5.76% of $250–$499 transactions were labelled fraudulent. Use these indicators together for stepped-up review—not automatic blocking.</aside>
     <section class="two">
       <article class="panel">
         <div class="panelHead">
@@ -104,15 +105,15 @@
       </article>
       <article class="panel">
         <h2>Hourly fraud pattern</h2>
-        <p>Observed fraud rate by transaction hour.</p>
+        <p>Fraudulent transactions ÷ all transactions at each hour.</p>
         <svg id="hourChart" viewBox="0 0 600 235" aria-label="Fraud rate by hour"></svg>
-        <div class="legend"><span><i class="dot"></i>00:00–05:59: 0.821%</span><span>06:00–23:59: 0.327%</span></div>
+        <div class="legend"><span><i class="dot"></i>22:00–23:59: 2.176%</span><span>00:00–03:59: 1.199%</span></div>
       </article>
     </section>
     <section class="two">
       <article class="panel">
         <div class="panelHead">
-          <div><h2>High-rate states</h2><p>Change the minimum volume to test stability.</p></div>
+          <div><h2>High-rate states</h2><p>Top 10 after applying the selected minimum to all states.</p></div>
           <label>Min transactions
             <select id="minVolume">
               <option value="100">100</option>
@@ -123,14 +124,15 @@
           </label>
         </div>
         <table><thead><tr><th>State</th><th>Transactions</th><th>Frauds</th><th>Rate</th></tr></thead><tbody id="stateRows"></tbody></table>
+        <p class="tableNote" id="stateSummary"></p>
       </article>
       <article class="panel">
         <h2>Recommended actions</h2>
         <ol>
-          <li><b>Strengthen card-not-present monitoring</b><span>Prioritize online shopping, especially overnight.</span></li>
+          <li><b>Strengthen late-night monitoring</b><span>Prioritize online shopping from 22:00–03:59, with particular attention to the 22:00 and 23:00 peaks.</span></li>
           <li><b>Prioritize $250+ transactions for review</b><span>Apply additional verification when high amount appears with other risk signals: observed fraud rates were 17.86% for $500+ and 5.76% for $250–$499.</span></li>
-          <li><b>Use combined risk rules</b><span>Combine transaction amount, category, merchant history and timing instead of relying on amount alone.</span></li>
-          <li><b>Apply volume safeguards</b><span>Require minimum sample sizes before escalating segments.</span></li>
+          <li><b>Use combined risk rules</b><span>Combine transaction amount, category, merchant history and timing instead of relying on one warning sign.</span></li>
+          <li><b>Apply state-volume safeguards</b><span>Filter all states by a minimum transaction count before comparing fraud rates; validate low-volume results before acting.</span></li>
           <li><b>Treat findings as initial risk indicators</b><span>This analysis covers one month, so use the patterns to select transactions for additional verification—not automatic blocking.</span></li>
         </ol>
       </article>
@@ -167,8 +169,8 @@
       ["grocery_net",1544,3,.194],["food_dining",2898,5,.173],["kids_pets",3633,6,.165],["travel",1313,2,.152],
       ["health_fitness",2770,4,.144],["home",3982,5,.126]
     ];
-    const hours=[.72,1.03,.55,.76,.82,1.05,.31,.28,.22,.25,.18,.21,.3,.24,.29,.35,.33,.27,.31,.36,.41,.38,.49,.58];
-    const states=[["NV",192,4,2.083],["TN",568,9,1.585],["WV",802,12,1.496],["CO",419,6,1.432],["OK",896,10,1.116],["OH",1520,14,.921],["NE",813,7,.861],["GA",891,7,.786],["IL",1414,11,.778],["AR",1046,7,.669]];
+    const hours=[[0,1368,18,1.315789],[1,1400,18,1.285714],[2,1399,15,1.072194],[3,1421,16,1.125968],[4,1374,1,.07278],[5,1444,1,.069252],[6,1364,0,0],[7,1378,0,0],[8,1424,0,0],[9,1353,1,.07391],[10,1372,0,0],[11,1376,2,.145349],[12,2129,1,.04697],[13,2172,2,.092081],[14,2066,0,0],[15,2051,0,0],[16,2143,2,.093327],[17,2152,1,.046468],[18,2184,1,.045788],[19,2132,2,.093809],[20,2055,2,.097324],[21,2140,1,.046729],[22,2196,47,2.140255],[23,2215,49,2.21219]];
+    const states=[["AK",61,0,0],["AL",1314,8,.608828],["AR",1046,7,.669216],["AZ",346,0,0],["CA",1871,3,.160342],["CO",419,6,1.431981],["CT",255,0,0],["DC",110,0,0],["FL",1451,1,.068918],["GA",891,7,.785634],["HI",80,0,0],["IA",879,0,0],["ID",177,0,0],["IL",1414,11,.777935],["IN",876,3,.342466],["KS",736,3,.407609],["KY",961,3,.312175],["LA",650,0,0],["MA",441,0,0],["MD",876,0,0],["ME",483,0,0],["MI",1509,6,.397614],["MN",1016,3,.295276],["MO",1265,8,.632411],["MS",689,2,.290276],["MT",364,0,0],["NC",1013,0,0],["ND",475,1,.210526],["NE",813,7,.861009],["NH",265,1,.377358],["NJ",739,0,0],["NM",536,3,.559701],["NV",192,4,2.083333],["NY",2801,0,0],["OH",1520,14,.921053],["OK",896,10,1.116071],["OR",599,0,0],["PA",2585,17,.65764],["RI",16,0,0],["SC",907,3,.330761],["SD",406,0,0],["TN",568,9,1.584507],["TX",3111,16,.514304],["UT",341,0,0],["VA",896,4,.446429],["VT",398,0,0],["WA",645,0,0],["WI",976,4,.409836],["WV",802,12,1.496259],["WY",628,4,.636943]];
     const amountBins=[["$500+",504,90],["$250–$499",747,43],["$100–$249",6330,7],["$50–$99",12770,1],["$25–$49",6870,1],["Under $25",15087,38]];
 
     function renderCategories(metric){
@@ -190,18 +192,21 @@
 
     function renderStates(){
       const min=Number(document.getElementById("minVolume").value);
-      document.getElementById("stateRows").innerHTML=states.filter(row=>row[1]>=min).map(row=>
+      const qualifying=states.filter(row=>row[1]>=min).sort((a,b)=>b[3]-a[3]||b[1]-a[1]);
+      const displayed=qualifying.slice(0,10);
+      document.getElementById("stateRows").innerHTML=displayed.map(row=>
         `<tr><td>${row[0]}</td><td>${row[1].toLocaleString()}</td><td>${row[2]}</td><td>${row[3].toFixed(3)}%</td></tr>`
       ).join("");
+      document.getElementById("stateSummary").textContent=`Showing ${displayed.length} highest-rate states from ${qualifying.length} states with at least ${min.toLocaleString()} transactions.`;
     }
     document.getElementById("minVolume").addEventListener("change",renderStates);
 
     function renderHours(){
-      const max=Math.max(...hours);
-      const points=hours.map((value,index)=>`${30+index*24},${200-value/max*150}`).join(" ");
+      const max=Math.max(...hours.map(row=>row[3]));
+      const points=hours.map((row,index)=>`${30+index*24},${200-row[3]/max*150}`).join(" ");
       document.getElementById("hourChart").innerHTML=
         `<line x1="30" y1="200" x2="585" y2="200"></line><line x1="30" y1="45" x2="30" y2="200"></line><polyline points="${points}"></polyline>`+
-        hours.map((value,index)=>`<g><circle cx="${30+index*24}" cy="${200-value/max*150}" r="4"></circle><text x="${30+index*24}" y="220">${index}</text></g>`).join("");
+        hours.map((row,index)=>`<g><title>${String(row[0]).padStart(2,"0")}:00 — ${row[3].toFixed(3)}% (${row[2]} frauds of ${row[1].toLocaleString()} transactions)</title><circle cx="${30+index*24}" cy="${200-row[3]/max*150}" r="4"></circle><text x="${30+index*24}" y="220">${index}</text></g>`).join("");
     }
 
     function renderAmounts(){
