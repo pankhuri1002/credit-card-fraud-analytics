@@ -13,4 +13,4 @@ The fields resemble personal and payment information, but the project treats the
 
 ## Reproducibility
 
-The dashboard metrics and SQL analysis are calculated from the original transaction-level fields. No pre-aggregated CSV files are required to understand or reproduce the project.
+The dashboard metrics are calculated from the original transaction-level fields. No pre-aggregated CSV files are required to understand the project.
